@@ -1,0 +1,48 @@
+$ ./orion.py -n data/hbase_case/nodeadlock_med_before.dat -a data/hbase_case/deadlock_orion03_med.dat --select-metrics
+Localization module loaded.
+Correlation analysis module loaded.
+[ORION]: Normal File: data/hbase_case/nodeadlock_med_before.dat
+[ORION]: Abnormal File: data/hbase_case/deadlock_orion03_med.dat
+[ORION]: Loading data files...
+[ORION]: Calculating correlations for window-size: 100
+[ORION]: Finding abnormal correlations...
+[ORION]: Calculating correlations for window-size: 125
+[ORION]: Finding abnormal correlations...
+[ORION]: Calculating correlations for window-size: 150
+[ORION]: Finding abnormal correlations...
+[ORION]: Calculating correlations for window-size: 175
+[ORION]: Finding abnormal correlations...
+[ORION]: Calculating correlations for window-size: 200
+[ORION]: Finding abnormal correlations...
+
+========== Top-3 Abnormal Metrics ==========
+Format: [Rank] [Metric]
+[1]: utime
+[2]: wchar
+[3]: num_file_desc
+
+========== Other Metrics ==========
+[4]: read_bytes
+[5]: rchar
+[6]: stime
+[7]: minflt
+[8]: num_threads
+[9]: rss
+[10]: vsize
+
+
+$ ./orion.py -n data/hbase_case/nodeadlock_med_before.dat -a data/hbase_case/deadlock_orion03_med.dat --select-regions -m utime
+Localization module loaded.
+Correlation analysis module loaded.
+[ORION]: Normal File: data/hbase_case/nodeadlock_med_before.dat
+[ORION]: Abnormal File: data/hbase_case/deadlock_orion03_med.dat
+[ORION]: Finding outliers...
+
+========== Top-3 Abnormal Code Regions ==========
+[1]:
+	[498] org/apache/hadoop/hbase/regionserver/HRegion
+[2]:
+	[355] org/apache/hadoop/hbase/regionserver/HRegionServer
+[3]:
+	[278] org/apache/hadoop/hbase/regionserver/Store
+

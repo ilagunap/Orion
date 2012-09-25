@@ -1,0 +1,32 @@
+$ ./orion.py -n data/itap_case/normal_data.dat -a data/itap_case/abnormal_data.dat --select-metrics
+Localization module loaded.
+Correlation analysis module loaded.
+[ORION]: Normal File: data/itap_case/normal_data.dat
+[ORION]: Abnormal File: data/itap_case/abnormal_data_tiny_2.dat
+[ORION]: Loading data files...
+[ORION]: Calculating correlations for window-size: 100
+[ORION]: Finding abnormal correlations...
+[ORION]: Calculating correlations for window-size: 125
+[ORION]: Finding abnormal correlations...
+[ORION]: Calculating correlations for window-size: 150
+[ORION]: Finding abnormal correlations...
+[ORION]: Calculating correlations for window-size: 175
+[ORION]: Finding abnormal correlations...
+[ORION]: Calculating correlations for window-size: 200
+[ORION]: Finding abnormal correlations...
+
+========== Top-3 Abnormal Metrics ==========
+Format: [Rank] [Metric]
+[1]: Servlet_18
+[2]: SQL_source_4
+[3]: ram_mem
+
+========== Other Metrics ==========
+[4]: 8445_maxTime
+[5]: Servlet_30
+[6]: 8445_requestCount
+[7]: 8445_bytesSent
+[8]: 8445_bytesReceived
+[9]: Servlet_43
+[10]: Servlet_42
+

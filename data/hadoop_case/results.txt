@@ -1,0 +1,49 @@
+$ ./orion.py -n data/hadoop_case/normal_med.dat -a data/hadoop_case/abnormal_med.dat --select-metrics
+Localization module loaded.
+Correlation analysis module loaded.
+[ORION]: Normal File: data/hadoop_case/normal_med.dat
+[ORION]: Abnormal File: data/hadoop_case/abnormal_med.dat
+[ORION]: Loading data files...
+[ORION]: Calculating correlations for window-size: 100
+[ORION]: Finding abnormal correlations...
+[ORION]: Calculating correlations for window-size: 125
+[ORION]: Finding abnormal correlations...
+[ORION]: Calculating correlations for window-size: 150
+[ORION]: Finding abnormal correlations...
+[ORION]: Calculating correlations for window-size: 175
+[ORION]: Finding abnormal correlations...
+[ORION]: Calculating correlations for window-size: 200
+[ORION]: Finding abnormal correlations...
+
+========== Top-3 Abnormal Metrics ==========
+Format: [Rank] [Metric]
+[1]: rss
+[2]: num_file_desc
+[3]: minflt
+
+========== Other Metrics ==========
+[4]: write_bytes
+[5]: num_threads
+[6]: vsize
+[7]: wchar
+[8]: stime
+[9]: rchar
+[10]: utime
+
+
+
+$ ./orion.py -n data/hadoop_case/normal_med.dat -a data/hadoop_case/abnormal_med.dat --select-regions -m num_file_desc
+Localization module loaded.
+Correlation analysis module loaded.
+[ORION]: Normal File: data/hadoop_case/normal_med.dat
+[ORION]: Abnormal File: data/hadoop_case/abnormal_med.dat
+[ORION]: Finding outliers...
+
+========== Top-3 Abnormal Code Regions ==========
+[1]:
+	[218] org/apache/hadoop/dfs/DFSClient
+[2]:
+	[183] org/apache/hadoop/dfs/BlocksMap
+[3]:
+	[172] org/apache/hadoop/dfs/DataNode
+

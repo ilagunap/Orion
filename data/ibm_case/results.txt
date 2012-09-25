@@ -1,0 +1,59 @@
+$ ./orion.py -n data/ibm_case/normal-expect.csv -a data/ibm_case/buggy-nfs-10-expect.csv --select-metrics
+Localization module loaded.
+Correlation analysis module loaded.
+[ORION]: Normal File: data/ibm_case/normal-expect.csv
+[ORION]: Abnormal File: data/ibm_case/buggy-nfs-10-expect.csv
+[ORION]: Loading data files...
+[ORION]: Calculating correlations for window-size: 100
+[ORION]: Finding abnormal correlations...
+[ORION]: Calculating correlations for window-size: 125
+[ORION]: Finding abnormal correlations...
+[ORION]: Calculating correlations for window-size: 150
+[ORION]: Finding abnormal correlations...
+[ORION]: Calculating correlations for window-size: 175
+[ORION]: Finding abnormal correlations...
+[ORION]: Calculating correlations for window-size: 200
+[ORION]: Finding abnormal correlations...
+
+========== Top-3 Abnormal Metrics ==========
+Format: [Rank] [Metric]
+[1]: wchar
+[2]: read_bytes
+[3]: rss
+
+========== Other Metrics ==========
+[4]: canceled_write_bytes
+[5]: stack_size
+[6]: vsize
+[7]: IPInOctets
+[8]: stime
+[9]: nicRcvBytes
+[10]: rchar
+
+
+$ ./orion.py -n data/ibm_case/normal-expect.csv -a data/ibm_case/buggy-nfs-10-expect.csv --select-regions -m wchar -w
+Localization module loaded.
+Correlation analysis module loaded.
+[ORION]: Normal File: data/ibm_case/normal-expect.csv
+[ORION]: Abnormal File: data/ibm_case/buggy-nfs-10-expect.csv
+[ORION]: Finding outliers...
+
+========== Top-3 Abnormal Code Regions ==========
+[1]:
+	[75] checking if there is a more critical commit we could work on_network
+	[75] running two hacks to avoid problems with ISS750 regressions and Cell MFC tests that have simdebug instruction set_host
+	[75] running another simple hack to avoid running tsts on debug builds_host
+	[75] disconnecting from the database_network
+[2]:
+	[72] sending a notification of the results if appropriate_network
+	[72] exiting from the database after writing to the SUMMARY table_network
+[3]:
+	[71] removing the temporary directory on worker_host
+	[71] writing the results to the summary table in database_network
+	[71] commiting to the SUMMARY table in the database_network
+	[71] running the test cases on the worker_host
+	[71] checking the space in worker temp directory_host
+	[71] exiting from the database after writing to the results table_network
+	[71] checking the existence of lock file_host
+	[71] figuring out the result of the test_host
+

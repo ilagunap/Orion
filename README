@@ -1,0 +1,89 @@
+ORION
+=====
+Author: Ignacio Laguna
+Contact: ilaguna@purdue.edu
+
+Overview
+--------
+Orion is a tool for problem localization based on correlation analysis of
+multiple application metrics. The user collects measurements of multiple metrics
+per code region of an application. Orion then presents: (1) the abnormal metrics,
+and (2) for a given abnormal metric, the abnormal code regions.
+
+Requirements
+------------
+Orion only requires Python 2. We have tested it with version 2.6.4.
+
+Traces
+------
+Before running Orion, you need two files:
+(1) A file with normal-behavior traces (when no failures are observed)
+(2) A file with abnormal-behavior traces (when a failure occurs)
+
+There are multiple ways of collecting traces. The 'data' directory presents
+data files for four applications we have analyzed (Hadoop, HBase, StationsStat,
+and IBM MHM system). The 'results.txt' file shows the results of running Orion.
+
+How to run it
+-------------
+You need to provide the two files using the -n and -a options. First, run the
+'--select-metrics' mode and then run the '--select-regions' mode using a metric
+from the previous mode. For help with command options, use the '-h' option.
+
+
+Usage:
+------
+$ ./orion.py -h
+Usage: orion.py [options]
+
+Options:
+  -h, --help            show this help message and exit
+  --select-metrics      Select abnormal metrics.
+  --select-regions      Select abnormal code regions.
+  -m METRIC, --metric=METRIC
+                        Name for the abnormal metric.
+  -a AFILE, --abnormal-traces=AFILE
+                        Abnormal traces file.
+  -n NFILE, --normal-traces=NFILE
+                        Normal traces file.
+  -w, --many-windows    Use a large number of windows in the analysis. Useful
+                        when data sets are small.
+
+Traces file format
+------------------
+Traces file should have a particular format using the comma-separated values
+(CSV) style:
+- The first line contains the feature names (the first feature is code-regions
+and the rest are metric names)
+- The rest of the lines are records containing a code region name and metric
+values.
+
+Example
+-------
+In this example we find the abnormal metrics of a file-descriptor leak bug in
+Haddop; more reaults are in 'data/hadoop_case/results.txt':
+
+$ ./orion.py -n data/hadoop_case/normal_med.dat -a data/hadoop_case/abnormal_med.dat --select-metrics
+Localization module loaded.
+Correlation analysis module loaded.
+[ORION]: Normal File: data/hadoop_case/normal_med.dat
+[ORION]: Abnormal File: data/hadoop_case/abnormal_med.dat
+[ORION]: Loading data files...
+[ORION]: Calculating correlations for window-size: 100
+[ORION]: Finding abnormal correlations...
+[ORION]: Calculating correlations for window-size: 125
+[ORION]: Finding abnormal correlations...
+[ORION]: Calculating correlations for window-size: 150
+[ORION]: Finding abnormal correlations...
+[ORION]: Calculating correlations for window-size: 175
+[ORION]: Finding abnormal correlations...
+[ORION]: Calculating correlations for window-size: 200
+[ORION]: Finding abnormal correlations...
+
+========== Top-3 Abnormal Metrics ==========
+Format: [Rank] [Metric]
+[1]: rss
+[2]: num_file_desc
+[3]: minflt
+
+
