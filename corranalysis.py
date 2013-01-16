@@ -11,6 +11,11 @@ class CorrelationVector(object):
         
     def __lt__(self, other):
         return self.diss < other.diss
+    
+    def __str__(self):
+        ret = "[Nearest-neighbor distance: " + str(self.diss)
+        ret = ret + ", Abnormal features: " + str(self.dimList) + "]"
+        return ret
 
 # Returns tuple (a,b)
 # a: Euclidean distance between the two list
@@ -31,15 +36,29 @@ def calculateVectorDistance(listX, listY):
         
     return (dist, l)
 
-# For each row in matrix B: calculates nearest neighbor distances
-# with respect to matrix A.
-# K: top-k most distance correlation vectors to return
-# D: top-d most abnormal correlations within each returned correlation vector
-#
-# Returns:
-# List of k correlation vectors and most abnormal correlations
+# This function returns a list of abnormal correlations (or correlation
+# coefficients) in the following form:
 # [[2,45,100], [100,3,9], [...], ...]
+# Each element in the outer list corresponds to the most abnormal correlations
+# (i.e., those that contribute the most to the distance) for a given CCV.
+#
+# What this example says is that, 2, 45, and 100 are the top-3 most abnormal 
+# correlation coefficients for the first CCV (i.e., the most abnormal CCV).
+#
+# Subsequently, 100, 3 and 9, are the top-3 most abnormal 
+# correlation coefficients for the second most abnormal CCV...and so on.
+#
+# Parameters:
+# K: top-k the most distant correlation-coefficient vectors (CCVs)
+# D: top-d the most abnormal correlations within each CCV
 def getAbnormalCorrelations(corrMatrixA, corrMatrixB, K, D):
+    abnormalCCVs = getAbnormalCCVs(corrMatrixA, corrMatrixB, K)
+    ret = getAbnormalFeatures(abnormalCCVs, D)
+    return ret
+
+# Get characteristics top-K abnormal correlation coefficient vectors (CCVs).
+# A CCV is represented by an instance of 'CorrelationVector'.
+def getAbnormalCCVs(corrMatrixA, corrMatrixB, K):
     corrVecs = []
     for i in range(corrMatrixB.rows):
         rowB = corrMatrixB.getRow(i)
@@ -48,16 +67,32 @@ def getAbnormalCorrelations(corrMatrixA, corrMatrixB, K, D):
             rowA = corrMatrixA.getRow(j)
             (dist, dimsList) = calculateVectorDistance(rowB, rowA)
             vecs.append(CorrelationVector(dist, dimsList))
+        # Here we sort CCVs based on their dissimilarity
+        # which is stored in the 'dist' variable of a CorrelationVector object
         vecs.sort()
+        # Since we are using nearest-neighbor, we take the first element of
+        # the 'vecs' array, i.e., the closest CCV to 'rowB'.
         corrVecs.append(vecs[0])
+        
+    # Now we sort and reverse 'corrVecs' to put the most abnormal CCVs at the
+    # beginning and the most normal CCVs at the end. 
     corrVecs.sort()
     corrVecs.reverse()
     
+    # Return only the top-K abnormal CCVs
+    return corrVecs[0:K]
+
+# Iterates over the abnormal CCVs and finds the top-D abnormal correlations.
+# A CCV is an instance of 'CorrelationVector' which contains two variables --
+# one of them containing a list of the most abnormal 
+# correlations (i.e., dimList). The function iterates over 'dimList' (for each 
+# CCV) and finds the top D elements.
+def getAbnormalFeatures(abnormalCCVs, D):
     ret = []
-    for i in range(K):
+    for i in range(len(abnormalCCVs)):
         tmp = []
         for j in range(D):
-            tmp.append(corrVecs[i].dimList[j])
+            tmp.append(abnormalCCVs[i].dimList[j])
         ret.append(tmp)
     return ret
 
